@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matched IA ⚽</title>
+  <style>
+    :root {
+      --bg1: #04101c;
+      --bg2: #0d2238;
+      --bg3: #13365a;
+      --card: rgba(255,255,255,0.96);
+      --text: #f7fbff;
+      --shadow: 0 18px 50px rgba(0,0,0,0.35);
+      --accent: #35d07f;
+      --accent2: #4aa3ff;
+      --accent3: #ffcc4d;
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(74,163,255,0.20), transparent 22%),
+        radial-gradient(circle at 84% 12%, rgba(53,208,127,0.16), transparent 18%),
+        radial-gradient(circle at 50% 90%, rgba(255,204,77,0.10), transparent 20%),
+        linear-gradient(135deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(4, 10, 20, 0.86);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      font-size: 1.08rem;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      box-shadow: 0 10px 25px rgba(74,163,255,0.35);
+      font-size: 1.2rem;
+      flex: 0 0 auto;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      padding: 9px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 18px 28px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 22px 14px 10px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4.2rem);
+      line-height: 0.98;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      margin: 14px auto 0;
+      max-width: 760px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.86);
+    }
+
+    .stage {
+      margin-top: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stage::before,
+    .stage::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .stage::before {
+      left: -70px;
+      top: -70px;
+      background: radial-gradient(circle, rgba(74,163,255,0.18), transparent 65%);
+    }
+
+    .stage::after {
+      right: -70px;
+      bottom: -70px;
+      background: radial-gradient(circle, rgba(53,208,127,0.16), transparent 65%);
+    }
+
+    .query-card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.96);
+      color: #111827;
+      border-radius: 28px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+      padding: 22px;
+    }
+
+    .query-card h2 {
+      margin: 0 0 6px;
+      font-size: 1.42rem;
+    }
+
+    .query-card .sub {
+      margin: 0 0 16px;
+      color: #4b5563;
+      font-size: 0.95rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input {
+      flex: 1 1 320px;
+      min-width: 0;
+      padding: 16px 16px;
+      border-radius: 16px;
+      border: 1px solid #dbe5f2;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+      background: white;
+    }
+
+    input:focus {
+      border-color: #7cb7ff;
+      box-shadow: 0 0 0 4px rgba(74,163,255,0.16);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(135deg, #1d4ed8, #12b981);
+      box-shadow: 0 12px 24px rgba(18,185,129,0.22);
+      transition: transform .18s ease, filter .18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      border: 1px solid #dce6f3;
+      background: #f8fbff;
+      color: #1f2937;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      background: #eef6ff;
+    }
+
+    .answer {
+      margin-top: 16px;
+      border-radius: 22px;
+      padding: 18px;
+      background: linear-gradient(135deg, #eff6ff, #ecfdf5);
+      border: 1px solid #d8e8fb;
+      min-height: 126px;
+      display: flex;
+      align-items: center;
+      font-size: 1.04rem;
+      line-height: 1.5;
+    }
+
+    .deck {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      border-radius: 22px;
+      padding: 14px;
+      color: white;
+      background: linear-gradient(135deg, #0b1220, #172b4d);
+      box-shadow: var(--shadow);
+      min-height: 112px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.86);
+    }
+
+    .reactions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .reactions button {
+      border: 1px solid #dce6f3;
+      background: white;
+      color: #111827;
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .reactions button:hover {
+      transform: translateY(-1px);
+      background: #f3f8ff;
+    }
+
+    .footer {
+      margin: 18px 0 0;
+      text-align: center;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+
+      .deck {
+        grid-template-columns: 1fr;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">⚽</div>
+      <div>
+        Matched IA
+        <div style="font-size:.82rem; font-weight:normal; opacity:.75;">preguntas de fútbol con onda</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button class="pill" onclick="ponerEjemplo('¿En qué club juega Messi?')">Messi</button>
+      <button class="pill" onclick="ponerEjemplo('¿Zlatan Ibrahimović jugó en el United?')">Zlatan</button>
+      <button class="pill" onclick="ponerEjemplo('¿Quién ganó el Mundial 2022?')">Mundial</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <h1>Una web hecha para preguntar<br>y decir: uf, qué linda.</h1>
+      <p>
+        La idea es simple: que la pregunta mande. Nada de demasiado texto alrededor. Más fútbol, más clubes, más jugadores,
+        más preguntas puntuales y una web que se sienta divertida desde el primer segundo.
+      </p>
+    </section>
+
+    <section class="stage">
+      <div class="query-card">
+        <h2>Hazme preguntas ⚡</h2>
+        <p class="sub">Probá con clubes, jugadores, torneos y preguntas puntuales sobre fútbol.</p>
+
+        <div class="input-row">
+          <input id="pregunta" placeholder="Ej: ¿Zlatan Ibrahimović jugó en el United?" autocomplete="off" />
+          <button class="btn" onclick="responder()">Preguntar</button>
+        </div>
+
+        <div class="chips">
+          <button class="chip" onclick="ponerEjemplo('¿Zlatan Ibrahimović jugó en el United?')">Zlatan y United</button>
+          <button class="chip" onclick="ponerEjemplo('¿En qué club juega Messi?')">Club de Messi</button>
+          <button class="chip" onclick="ponerEjemplo('¿En qué club juega Mbappé?')">Club de Mbappé</button>
+          <button class="chip" onclick="ponerEjemplo('¿Quién ganó el Mundial 2014?')">Mundial 2014</button>
+          <button class="chip" onclick="ponerEjemplo('¿Quién ganó la Eurocopa 2024?')">Eurocopa 2024</button>
+          <button class="chip" onclick="ponerEjemplo('¿Cristiano Ronaldo jugó en el Manchester United?')">CR7 y United</button>
+        </div>
+
+        <div id="respuesta" class="answer">
+          <span>Escribí una pregunta y te respondo con estilo 😎</span>
+        </div>
+
+        <div class="reactions">
+          <button onclick="ponerEjemplo('¿En qué club juega Haaland?')">Haaland</button>
+          <button onclick="ponerEjemplo('¿En qué club juega Vinícius Júnior?')">Vinícius</button>
+          <button onclick="ponerEjemplo('¿Quién ganó la Champions 2024?')">Champions 2024</button>
+          <button onclick="ponerEjemplo('¿Qué club tiene más Champions?')">Más Champions</button>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="card">
+          <h3>🔥 Clubs</h3>
+          <p>Real Madrid, Barcelona, United, Liverpool, City, PSG, Inter Miami, Al Nassr, Bayern, Juventus y más.</p>
+        </div>
+        <div class="card">
+          <h3>🌍 Torneos</h3>
+          <p>Mundial, Eurocopa, Copa América, Champions, Libertadores, finales, clásicos y selecciones.</p>
+        </div>
+        <div class="card">
+          <h3>⚡ Jugadores</h3>
+          <p>Messi, Ronaldo, Zlatan, Mbappé, Haaland, Vinícius, Bellingham, Neymar, Salah, De Bruyne.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">Menos texto alrededor. Más fútbol. Más ganas de probarla.</div>
+  </div>
+
+  <script>
+    function normalizar(texto) {
+      return texto
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+    }
+
+    function ponerEjemplo(texto) {
+      document.getElementById('pregunta').value = texto;
+      responder();
+    }
+
+    const jugadores = [
+      { claves: ['messi', 'lionel'], nombre: 'Messi', club: 'Inter Miami', pais: 'Argentina', posicion: 'delantero', perfil: 'una de las figuras más grandes de la historia del fútbol' },
+      { claves: ['ronaldo', 'cristiano', 'cr7'], nombre: 'Cristiano Ronaldo', club: 'Al Nassr', pais: 'Portugal', posicion: 'delantero', perfil: 'una leyenda total y un goleador histórico' },
+      { claves: ['zlatan', 'ibrahimovic', 'ibrahimović'], nombre: 'Zlatan Ibrahimović', club: 'retirado', pais: 'Suecia', posicion: 'delantero', perfil: 'un delantero histórico, famoso por su personalidad y sus goles' },
+      { claves: ['mbappe', 'mbappé'], nombre: 'Mbappé', club: 'Real Madrid', pais: 'Francia', posicion: 'delantero', perfil: 'rápido, decisivo y de los más peligrosos' },
+      { claves: ['haaland'], nombre: 'Haaland', club: 'Manchester City', pais: 'Noruega', posicion: 'delantero', perfil: 'un nueve de área muy potente' },
+      { claves: ['vinicius', 'vinicius junior', 'vinicius jr', 'vinícius', 'vinícius júnior'], nombre: 'Vinícius Júnior', club: 'Real Madrid', pais: 'Brasil', posicion: 'delantero', perfil: 'explosivo, rápido y muy habilidoso' },
+      { claves: ['bellingham'], nombre: 'Bellingham', club: 'Real Madrid', pais: 'Inglaterra', posicion: 'centrocampista', perfil: 'muy completo y con llegada al gol' },
+      { claves: ['neymar'], nombre: 'Neymar', club: 'Al Hilal', pais: 'Brasil', posicion: 'delantero', perfil: 'creativo, talentoso y muy habilidoso' },
+      { claves: ['salah'], nombre: 'Salah', club: 'Liverpool', pais: 'Egipto', posicion: 'delantero', perfil: 'rápido y con mucho gol' },
+      { claves: ['de bruyne', 'debruyne'], nombre: 'De Bruyne', club: 'Manchester City', pais: 'Bélgica', posicion: 'centrocampista', perfil: 'creativo y con pases impresionantes' },
+      { claves: ['modric', 'modrić'], nombre: 'Modrić', club: 'Real Madrid', pais: 'Croacia', posicion: 'centrocampista', perfil: 'una leyenda del mediocampo' },
+      { claves: ['kane'], nombre: 'Harry Kane', club: 'Bayern Múnich', pais: 'Inglaterra', posicion: 'delantero', perfil: 'goleador fino e inteligente' }
+    ];
+
+    const clubes = [
+      { claves: ['real madrid'], texto: '👑 El Real Madrid es uno de los clubes más grandes del mundo.' },
+      { claves: ['barcelona', 'barca', 'barça'], texto: '🔵🔴 El Barcelona es un club histórico y muy famoso.' },
+      { claves: ['manchester united', 'united', 'mu'], texto: '🔴 Manchester United es uno de los clubes más conocidos del mundo.' },
+      { claves: ['liverpool'], texto: '🔴 Liverpool tiene muchísima historia y una hinchada tremenda.' },
+      { claves: ['manchester city', 'city'], texto: '🔷 Manchester City es un club muy fuerte y protagonista en Europa.' },
+      { claves: ['psg', 'paris saint germain'], texto: '🌙 PSG es uno de los clubes más conocidos de Francia y de Europa.' },
+      { claves: ['inter miami'], texto: '🌴 Inter Miami se volvió súper famoso en los últimos años.' },
+      { claves: ['al nassr'], texto: '💛 Al Nassr es uno de los clubes más conocidos de Arabia Saudita.' },
+      { claves: ['bayern', 'bayern munich', 'bayern munich'], texto: '⚪ Bayern Múnich es un gigante del fútbol alemán.' },
+      { claves: ['juventus'], texto: '⚫⚪ Juventus es un club histórico de Italia.' }
+    ];
+
+    const torneos = [
+      { claves: ['mundial 2022', 'copa del mundo 2022', 'qatar 2022'], texto: '🏆 El Mundial 2022 lo ganó Argentina.' },
+      { claves: ['mundial 2018', 'rusia 2018'], texto: '🏆 El Mundial 2018 lo ganó Francia.' },
+      { claves: ['mundial 2014', 'brasil 2014'], texto: '🏆 El Mundial 2014 lo ganó Alemania.' },
+      { claves: ['mundial'], texto: '🌍 El Mundial es el torneo más grande de selecciones.' },
+      { claves: ['eurocopa 2024'], texto: '🏆 La Eurocopa 2024 la ganó España.' },
+      { claves: ['eurocopa'], texto: '🇪🇺 La Eurocopa es el torneo de selecciones de Europa.' },
+      { claves: ['copa america', 'copa américa'], texto: '🌎 La Copa América reúne a las selecciones sudamericanas.' },
+      { claves: ['champions league', 'champions', 'liga de campeones'], texto: '✨ La Champions League es el torneo de clubes más famoso de Europa.' },
+      { claves: ['libertadores', 'copa libertadores'], texto: '🏆 La Libertadores es el torneo más importante de clubes de Sudamérica.' }
+    ];
+
+    const preguntas = [
+      { claves: ['quien gano el mundial 2022'], texto: '🏆 Argentina ganó el Mundial 2022.' },
+      { claves: ['quien gano el mundial 2014'], texto: '🏆 Alemania ganó el Mundial 2014.' },
+      { claves: ['quien gano el mundial 2018'], texto: '🏆 Francia ganó el Mundial 2018.' },
+      { claves: ['quien gano la eurocopa 2024'], texto: '🏆 España ganó la Eurocopa 2024.' },
+      { claves: ['quien gano la champions 2024'], texto: '🏆 En 2024, el Real Madrid ganó la Champions.' },
+      { claves: ['quien gano la champions 2023'], texto: '🏆 En 2023, el Manchester City ganó la Champions.' },
+      { claves: ['quien gano la copa america 2024'], texto: '🏆 En 2024, Argentina ganó la Copa América.' },
+
+      { claves: ['cuantas champions tiene el real madrid'], texto: '👑 El Real Madrid es el club con más Champions de la historia.' },
+      { claves: ['que club tiene mas champions'], texto: '👑 El Real Madrid es el club con más Champions.' },
+      { claves: ['quien es el maximo goleador de la historia'], texto: '🥇 Cristiano Ronaldo es uno de los máximos goleadores históricos.' },
+      { claves: ['quien es el maximo goleador del mundial'], texto: '⚽ Miroslav Klose es el máximo goleador de los Mundiales.' },
+
+      { claves: ['messi gano el mundial'], texto: '🐐 Sí, Messi ganó el Mundial 2022 con Argentina.' },
+      { claves: ['ronaldo gano el mundial'], texto: '🇵🇹 Cristiano Ronaldo no ganó el Mundial.' },
+
+      { claves: ['zlatan jugo en el united', 'ibrahimovic jugo en el united'], texto: '🔴 Sí, Zlatan Ibrahimović jugó en el Manchester United.' },
+      { claves: ['cristiano jugo en el united'], texto: '🔴 Sí, Cristiano Ronaldo jugó en el Manchester United.' },
+      { claves: ['messi jugo en el barcelona'], texto: '🔵🔴 Sí, Messi jugó gran parte de su carrera en el Barcelona.' },
+
+      { claves: ['mbappe en que club juega'], texto: '⚡ Mbappé juega en el Real Madrid.' },
+      { claves: ['haaland en que club juega'], texto: '⚡ Haaland juega en el Manchester City.' },
+      { claves: ['vinicius en que club juega'], texto: '⚡ Vinícius juega en el Real Madrid.' },
+
+      { claves: ['que es la eurocopa'], texto: '🇪🇺 La Eurocopa es el torneo de selecciones europeas.' },
+      { claves: ['que es el mundial'], texto: '🌍 El Mundial es el torneo más importante de selecciones.' },
+      { claves: ['que es la champions'], texto: '✨ La Champions League es el torneo de clubes más importante de Europa.' },
+
+      { claves: ['que es un penal'], texto: '🥅 Un penal es un tiro directo desde el punto penal.' },
+      { claves: ['que es una tarjeta roja'], texto: '🟥 La tarjeta roja expulsa a un jugador.' },
+      { claves: ['que es una tarjeta amarilla'], texto: '🟨 La tarjeta amarilla es una advertencia.' },
+
+      { claves: ['quien es mejor messi o ronaldo'], texto: '🐐 Debate eterno: muchos eligen a Messi, otros a Cristiano.' },
+      { claves: ['cual es el mejor club'], texto: '👑 Depende del gusto, pero Real Madrid suele aparecer en la conversación.' },
+
+      { claves: ['que es un clasico'], texto: '🔥 Un clásico es un partido con mucha rivalidad e historia.' },
+      { claves: ['que es un fichaje'], texto: '📝 Un fichaje es cuando un jugador cambia de club.' }
+    ];
+
+    function respuestaJugador(j, p) {
+      if (p.includes('donde') || p.includes('club') || p.includes('equipo') || p.includes('juega')) {
+        return `🤝 ${j.nombre} juega en <strong>${j.club}</strong>.`;
+      }
+      if (p.includes('pais') || p.includes('nacionalidad') || p.includes('de donde')) {
+        return `🇦🇷 ${j.nombre} es de <strong>${j.pais}</strong>.`;
+      }
+      if (p.includes('posicion') || p.includes('puesto')) {
+        return `⚽ ${j.nombre} juega como <strong>${j.posicion}</strong>.`;
+      }
+      if (p.includes('quien es') || p.includes('quien fue')) {
+        return `🔥 ${j.nombre} es ${j.perfil}.`;
+      }
+      if (p.includes('jugo en el united') || p.includes('jugo en manchester united') || p.includes('jugó en el united') || p.includes('jugó en manchester united')) {
+        return `🔴 Sí, ${j.nombre} jugó en el Manchester United.`;
+      }
+      if (p.includes('edad') || p.includes('años') || p.includes('anos')) {
+        return `🎂 ${j.nombre} es una figura muy reconocida del fútbol mundial.`;
+      }
+      if (p.includes('goles') || p.includes('goleador')) {
+        return `🥅 ${j.nombre} suele aparecer en las conversaciones sobre goles y momentos importantes.`;
+      }
+      return `⚽ ${j.nombre} es de <strong>${j.pais}</strong>, juega de <strong>${j.posicion}</strong> y está ligado al fútbol grande.`;
+    }
+
+    function responder() {
+      const original = document.getElementById('pregunta').value;
+      const p = normalizar(original);
+      let r = '🤔 No la entendí todavía. Probá con un jugador, club, torneo o una pregunta puntual de fútbol.';
+
+      if (!p) {
+        document.getElementById('respuesta').innerHTML = '<strong>Escribí algo primero 🙂</strong>';
+        return;
+      }
+
+      if (p.includes('hola') || p.includes('buenas') || p.includes('hey')) {
+        r = '👋 Hola crack. Tirame una pregunta de fútbol.';
+      } else if (p.includes('gracias')) {
+        r = '🫶 De nada. Seguimos con fútbol.';
+      } else if (p.includes('mejor jugador') || p.includes('goat')) {
+        r = '🐐 Debate eterno. Mucha gente te diría Messi.';
+      } else if (p.includes('mejor equipo')) {
+        r = '👑 Depende del año y del gusto de cada uno, pero los gigantes siempre aparecen.';
+      }
+
+      for (const j of jugadores) {
+        if (j.claves.some(clave => p.includes(clave))) {
+          r = respuestaJugador(j, p);
+        }
+      }
+
+      for (const c of clubes) {
+        if (c.claves.some(clave => p.includes(clave))) {
+          r = c.texto;
+        }
+      }
+
+      for (const t of torneos) {
+        if (t.claves.some(clave => p.includes(clave))) {
+          r = t.texto;
+        }
+      }
+
+      for (const q of preguntas) {
+        if (q.claves.some(clave => p.includes(clave))) {
+          r = q.texto;
+        }
+      }
+
+      if (p.includes('argentina') && p.includes('mundial')) {
+        r = '🇦🇷 Argentina ganó el Mundial 2022 y tiene una historia enorme en la Copa del Mundo.';
+      } else if (p.includes('francia') && p.includes('mundial')) {
+        r = '🇫🇷 Francia ganó el Mundial 2018 y siempre pelea arriba.';
+      } else if (p.includes('brasil') && p.includes('mundial')) {
+        r = '🇧🇷 Brasil es una de las selecciones más grandes de la historia.';
+      } else if (p.includes('real madrid') && p.includes('champions')) {
+        r = '👑 El Real Madrid es el club más fuerte históricamente en la Champions.';
+      } else if (p.includes('barcelona') && p.includes('real madrid')) {
+        r = '🔥 El clásico entre Barcelona y Real Madrid es uno de los más famosos del mundo.';
+      }
+
+      document.getElementById('respuesta').innerHTML = r;
+    }
+
+    document.getElementById('pregunta').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') responder();
+    });
+  </script>
+</body>
+</html>
