@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matched IA ⚽</title>
+  <style>
+    :root {
+      --bg1: #07111f;
+      --bg2: #10263f;
+      --bg3: #17385d;
+      --card: rgba(255,255,255,0.96);
+      --text: #f7fbff;
+      --dark: #0b1220;
+      --accent: #35d07f;
+      --accent2: #4aa3ff;
+      --accent3: #ffcc4d;
+      --danger: #ff5f6d;
+      --shadow: 0 18px 50px rgba(0,0,0,0.35);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(74,163,255,0.18), transparent 22%),
+        radial-gradient(circle at 85% 12%, rgba(53,208,127,0.16), transparent 18%),
+        radial-gradient(circle at 50% 85%, rgba(255,204,77,0.10), transparent 20%),
+        linear-gradient(135deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(4, 10, 20, 0.84);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      font-size: 1.1rem;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      box-shadow: 0 10px 25px rgba(74,163,255,0.35);
+      font-size: 1.2rem;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      user-select: none;
+    }
+
+    .pill:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 86px 1fr 86px;
+      gap: 18px;
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .side {
+      position: sticky;
+      top: 84px;
+      align-self: start;
+      height: calc(100vh - 110px);
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 10px;
+      overflow: hidden;
+    }
+
+    .side .icon-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+      font-size: 1.4rem;
+    }
+
+    .side .badge {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .side .mini {
+      width: 100%;
+      background: rgba(8,17,31,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 12px 10px;
+      text-align: center;
+      font-size: 0.75rem;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .hero {
+      margin-top: 10px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 0.98;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      margin: 14px 0 0;
+      max-width: 900px;
+      font-size: 1.02rem;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .quiz-zone {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.96);
+      color: #111827;
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+    }
+
+    .panel .sub {
+      margin: 0 0 16px;
+      color: #4b5563;
+      font-size: 0.95rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input {
+      flex: 1 1 300px;
+      min-width: 0;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid #dbe5f2;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+      background: white;
+    }
+
+    input:focus {
+      border-color: #7cb7ff;
+      box-shadow: 0 0 0 4px rgba(74,163,255,0.16);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(135deg, #1d4ed8, #12b981);
+      box-shadow: 0 12px 24px rgba(18,185,129,0.22);
+      transition: transform .2s ease, filter .2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      border: 1px solid #dce6f3;
+      background: #f8fbff;
+      color: #1f2937;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      background: #eef6ff;
+    }
+
+    .answer {
+      margin-top: 16px;
+      border-radius: 22px;
+      padding: 16px;
+      background: linear-gradient(135deg, #eff6ff, #ecfdf5);
+      border: 1px solid #d8e8fb;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      font-size: 1.03rem;
+      line-height: 1.5;
+    }
+
+    .answer strong {
+      color: #0f172a;
+    }
+
+    .topics {
+      display: grid;
+      gap: 12px;
+    }
+
+    .topic {
+      background: linear-gradient(135deg, #0b1220, #172b4d);
+      color: white;
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .topic h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .topic p {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .footer {
+      margin: 18px 0 8px;
+      text-align: center;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1100px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+      .side {
+        display: none;
+      }
+      .quiz-zone {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero,
+      .panel {
+        padding: 18px;
+      }
+      .input-row {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">⚽</div>
+      <div>
+        Matched IA
+        <div style="font-size:.82rem; font-weight:normal; opacity:.75;">Preguntas de fútbol con onda</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <div class="pill" onclick="ponerEjemplo('¿Quién ganó el Mundial 2022?')">Mundial</div>
+      <div class="pill" onclick="ponerEjemplo('¿Qué es la Eurocopa?')">Eurocopa</div>
+      <div class="pill" onclick="ponerEjemplo('¿Qué es una tarjeta roja?')">Reglas</div>
+      <div class="pill" onclick="ponerEjemplo('¿Qué posición juega Messi?')">Jugadores</div>
+    </div>
+  </div>
+
+  <div class="shell">
+    <aside class="side">
+      <div class="icon-stack">
+        <div class="badge">🏟️</div>
+        <div class="badge">🏆</div>
+        <div class="badge">⚡</div>
+        <div class="badge">🥅</div>
+      </div>
+      <div class="mini">
+        <strong>Tip</strong><br>
+        escribí como hablas normalmente
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <h1>La parte principal es esta:<br>preguntá y te responde.</h1>
+        <p>
+          Hice la pantalla para que las preguntas sean lo más importante. Podés consultar sobre jugadores,
+          clubes, selecciones, Mundiales, Eurocopa, Champions, reglas, posiciones, títulos, penales,
+          tarjetas, posiciones y mucho más.
+        </p>
+      </section>
+
+      <section class="quiz-zone">
+        <div class="panel">
+          <h2>Hazme preguntas ⚡</h2>
+          <p class="sub">Probá escribir de forma natural. Reconoce muchas preguntas de fútbol.</p>
+
+          <div class="input-row">
+            <input id="pregunta" placeholder="Ej: ¿Quién ganó el Mundial 2014?" autocomplete="off" />
+            <button class="btn" onclick="responder()">Preguntar</button>
+          </div>
+
+          <div class="chips">
+            <button class="chip" onclick="ponerEjemplo('¿Quién ganó el Mundial 2022?')">Mundial 2022</button>
+            <button class="chip" onclick="ponerEjemplo('¿Qué es la Eurocopa?')">Eurocopa</button>
+            <button class="chip" onclick="ponerEjemplo('¿Qué es la Champions League?')">Champions</button>
+            <button class="chip" onclick="ponerEjemplo('¿Qué posición juega Messi?')">Posición</button>
+            <button class="chip" onclick="ponerEjemplo('¿Qué es un fuera de juego?')">Fuera de juego</button>
+          </div>
+
+          <div id="respuesta" class="answer">
+            <span>Escribí una pregunta y te respondo con onda 😎</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Temas que entiende</h2>
+          <p class="sub">Esto lo hace sentir mucho más completo.</p>
+
+          <div class="topics">
+            <div class="topic">
+              <h3>Jugadores</h3>
+              <p>Messi, Ronaldo, Mbappé, Haaland, Vinícius, Bellingham, Neymar, Salah, De Bruyne y más.</p>
+            </div>
+            <div class="topic">
+              <h3>Torneos</h3>
+              <p>Mundial, Eurocopa, Copa América, Champions League, Libertadores, Copa del Mundo, finales y selecciones.</p>
+            </div>
+            <div class="topic">
+              <h3>Reglas y fútbol real</h3>
+              <p>Penales, tarjetas, fuera de juego, corners, faltas, árbitro, arquero, defensor, volante, delantero.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        Después podés hacerlo todavía más inteligente con datos reales.
+      </div>
+    </main>
+
+    <aside class="side">
+      <div class="icon-stack">
+        <div class="badge">🔥</div>
+        <div class="badge">🌟</div>
+        <div class="badge">🌍</div>
+        <div class="badge">🎉</div>
+      </div>
+      <div class="mini">
+        <strong>Idea</strong><br>
+        mientras más temas agregues, más inteligente va a parecer
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    function normalizar(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+    }
+
+    function ponerEjemplo(texto) {
+      document.getElementById("pregunta").value = texto;
+      responder();
+    }
+
+    const jugadores = {
+      messi: {
+        nombre: "Messi",
+        pais: "Argentina",
+        posicion: "delantero",
+        tipo: "estrella"
+      },
+      ronaldo: {
+        nombre: "Cristiano Ronaldo",
+        pais: "Portugal",
+        posicion: "delantero",
+        tipo: "estrella"
+      },
+      mbappe: {
+        nombre: "Mbappé",
+        pais: "Francia",
+        posicion: "delantero",
+        tipo: "estrella"
+      },
+      haaland: {
+        nombre: "Haaland",
+        pais: "Noruega",
+        posicion: "delantero",
+        tipo: "goleador"
+      },
+      neymar: {
+        nombre: "Neymar",
+        pais: "Brasil",
+        posicion: "delantero",
+        tipo: "habilidoso"
+      },
+      vinicius: {
+        nombre: "Vinícius Júnior",
+        pais: "Brasil",
+        posicion: "delantero",
+        tipo: "rápido"
+      },
+      bellingham: {
+        nombre: "Bellingham",
+        pais: "Inglaterra",
+        posicion: "centrocampista",
+        tipo: "completo"
+      },
+      salah: {
+        nombre: "Salah",
+        pais: "Egipto",
+        posicion: "delantero",
+        tipo: "goleador"
+      },
+      debruyne: {
+        nombre: "De Bruyne",
+        pais: "Bélgica",
+        posicion: "centrocampista",
+        tipo: "creativo"
+      }
+    };
+
+    const torneos = [
+      {
+        claves: ["mundial 2022", "copa del mundo 2022", "qatar 2022"],
+        texto: "🏆 El Mundial 2022 lo ganó Argentina."
+      },
+      {
+        claves: ["mundial 2018", "rusia 2018"],
+        texto: "🏆 El Mundial 2018 lo ganó Francia."
+      },
+      {
+        claves: ["mundial 2014", "brasil 2014"],
+        texto: "🏆 El Mundial 2014 lo ganó Alemania."
+      },
+      {
+        claves: ["mundial", "copa del mundo"],
+        texto: "🌍 El Mundial es el torneo más importante de selecciones."
+      },
+      {
+        claves: ["eurocopa", "europa"],
+        texto: "🇪🇺 La Eurocopa es el torneo de selecciones de Europa."
+      },
+      {
+        claves: ["copa america", "copa américa"],
+        texto: "🌎 La Copa América reúne a las selecciones sudamericanas."
+      },
+      {
+        claves: ["champions league", "champions", "liga de campeones"],
+        texto: "✨ La Champions League es el torneo de clubes más famoso de Europa."
+      },
+      {
+        claves: ["libertadores", "copa libertadores"],
+        texto: "🏆 La Copa Libertadores es el torneo más importante de clubes de Sudamérica."
+      }
+    ];
+
+    function responder() {
+      const original = document.getElementById("pregunta").value;
+      const p = normalizar(original);
+      let r = "🤔 No la entendí todavía. Probá con jugadores, Mundiales, Eurocopa, Champions, reglas o selecciones.";
+
+      if (!p) {
+        document.getElementById("respuesta").innerHTML = "<strong>Escribí algo primero 🙂</strong>";
+        return;
+      }
+
+      if (p.includes("hola") || p.includes("buenas") || p.includes("hey")) {
+        r = "👋 Hola crack. Tirame una pregunta de fútbol.";
+      } else if (p.includes("gracias")) {
+        r = "🫶 De nada. Seguí preguntando.";
+      } else if (p.includes("mejor jugador") || p.includes("goat")) {
+        r = "🐐 Debate eterno. Mucha gente te diría Messi.";
+      } else if (p.includes("mejor equipo")) {
+        r = "👑 Depende del año y de a quién le preguntes, pero los grandes siempre aparecen en la charla.";
+      }
+
+      for (const clave in jugadores) {
+        const j = jugadores[clave];
+        if (p.includes(clave)) {
+          if (p.includes("pais") || p.includes("nacionalidad") || p.includes("de donde")) {
+            r = `🇦🇷 ${j.nombre} es de <strong>${j.pais}</strong>.`;
+          } else if (p.includes("posicion") || p.includes("puesto")) {
+            r = `⚽ ${j.nombre} juega como <strong>${j.posicion}</strong>.`;
+          } else if (p.includes("quien es") || p.includes("quien fue")) {
+            r = `🔥 ${j.nombre} es un jugador <strong>${j.tipo}</strong> y muy conocido en el fútbol.`;
+          } else if (p.includes("juega") || p.includes("club") || p.includes("equipo")) {
+            r = `🤝 ${j.nombre} es una de las figuras más conocidas del fútbol.`;
+          } else if (p.includes("edad") || p.includes("años")) {
+            r = `🎂 ${j.nombre} tiene una carrera larguísima y llena de momentos importantes.`;
+          } else if (p.includes("goles")) {
+            r = `🥅 ${j.nombre} es un nombre que siempre aparece cuando se habla de goles importantes.`;
+          } else {
+            r = `⚽ ${j.nombre} es de <strong>${j.pais}</strong> y suele jugar de <strong>${j.posicion}</strong>.`;
+          }
+        }
+      }
+
+      for (const t of torneos) {
+        for (const clave of t.claves) {
+          if (p.includes(clave)) {
+            r = t.texto;
+          }
+        }
+      }
+
+      if (p.includes("quien gano") && p.includes("mundial")) {
+        r = "🏆 Si hablás del Mundial 2022, lo ganó Argentina. Si querés otro año, escribilo y te digo.";
+      } else if (p.includes("quien gano") && p.includes("eurocopa")) {
+        r = "🇪🇺 Decime el año de la Eurocopa y te respondo el campeón.";
+      } else if (p.includes("que es") && p.includes("fuera de juego")) {
+        r = "📏 El fuera de juego es una regla que evita que un jugador saque ventaja quedando demasiado adelantado.";
+      } else if (p.includes("que es") && p.includes("penal")) {
+        r = "🥅 Un penal es un tiro directo desde el punto penal, normalmente por una falta dentro del área.";
+      } else if (p.includes("que es") && p.includes("tarjeta roja")) {
+        r = "🟥 La tarjeta roja expulsa a un jugador del partido.";
+      } else if (p.includes("que es") && p.includes("tarjeta amarilla")) {
+        r = "🟨 La tarjeta amarilla es una advertencia del árbitro.";
+      } else if (p.includes("que es") && p.includes("corner")) {
+        r = "🚩 El córner se da cuando la pelota cruza la línea de fondo y la tocó un defensor.";
+      } else if (p.includes("que es") && p.includes("arbitro")) {
+        r = "🧑‍⚖️ El árbitro controla el partido y hace cumplir las reglas.";
+      } else if (p.includes("arquero") || p.includes("portero")) {
+        r = "🧤 El arquero es el jugador que protege el arco.";
+      } else if (p.includes("defensor") || p.includes("defensa")) {
+        r = "🛡️ El defensor ayuda a evitar que el rival llegue al arco.";
+      } else if (p.includes("volante") || p.includes("medio campo")) {
+        r = "🎯 El volante conecta la defensa con el ataque.";
+      } else if (p.includes("delantero")) {
+        r = "⚡ El delantero suele estar más cerca del arco rival y busca hacer goles.";
+      } else if (p.includes("seleccion")) {
+        r = "🌎 Una selección es un equipo nacional que representa a un país.";
+      } else if (p.includes("club")) {
+        r = "🏟️ Un club es una institución que compite en ligas y torneos.";
+      } else if (p.includes("liga")) {
+        r = "📊 Una liga es un campeonato donde los equipos suman puntos durante la temporada.";
+      } else if (p.includes("final")) {
+        r = "🔥 Las finales son los partidos más tensos y emocionantes.";
+      } else if (p.includes("partido")) {
+        r = "⚽ Un partido de fútbol dura 90 minutos, más el tiempo agregado.";
+      } else if (p.includes("tiempo agregado") || p.includes("descuento")) {
+        r = "⏱️ El tiempo agregado es el que suma el árbitro al final de cada parte.";
+      } else if (p.includes("campeon")) {
+        r = "🏆 Un campeón es el equipo o jugador que gana un torneo.";
+      } else if (p.includes("empat")) {
+        r = "🤝 Un empate pasa cuando ambos equipos terminan con el mismo resultado.";
+      } else if (p.includes("remate") || p.includes("tiro")) {
+        r = "🎯 El remate es el disparo al arco para intentar convertir.";
+      } else if (p.includes("pase")) {
+        r = "🔁 El pase es una de las bases del fútbol: mover la pelota con precisión.";
+      } else if (p.includes("gambeta") || p.includes("regate")) {
+        r = "✨ La gambeta o regate sirve para dejar rivales atrás.";
+      } else if (p.includes("falta")) {
+        r = "🟨 Una falta se cobra cuando un jugador comete una infracción.";
+      } else if (p.includes("offside") || p.includes("fuera de juego")) {
+        r = "📏 El offside es lo mismo que fuera de juego.";
+      } else if (p.includes("var")) {
+        r = "📺 El VAR ayuda a revisar jugadas discutidas.";
+      } else if (p.includes("penales")) {
+        r = "🥶 Los penales son pura tensión y pueden definir un torneo.";
+      } else if (p.includes("hincha") || p.includes("aficion")) {
+        r = "🎉 Los hinchas hacen que el fútbol tenga todavía más emoción.";
+      }
+
+      if (p.includes("argentina") && p.includes("mundial")) {
+        r = "🇦🇷 Argentina ganó el Mundial 2022 y tiene una historia enorme en la Copa del Mundo.";
+      } else if (p.includes("francia") && p.includes("mundial")) {
+        r = "🇫🇷 Francia ganó el Mundial 2018 y siempre es una selección muy fuerte.";
+      } else if (p.includes("brasil") && p.includes("mundial")) {
+        r = "🇧🇷 Brasil es una de las selecciones más importantes y exitosas de la historia.";
+      } else if (p.includes("real madrid")) {
+        r = "👑 El Real Madrid es uno de los clubes más grandes y más famosos del mundo.";
+      } else if (p.includes("barcelona")) {
+        r = "🔵🔴 El Barcelona es un club histórico con muchísima tradición.";
+      } else if (p.includes("inter miami")) {
+        r = "🌴 Inter Miami se volvió muy conocido en el mundo del fútbol.";
+      } else if (p.includes("al nassr")) {
+        r = "💛 Al Nassr es uno de los clubes más conocidos de Arabia Saudita.";
+      }
+
+      document.getElementById("respuesta").innerHTML = r;
+    }
+
+    document.getElementById("pregunta").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") responder();
+    });
+  </script>
+</body>
+</html>
