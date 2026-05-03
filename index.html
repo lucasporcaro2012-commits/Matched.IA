@@ -1,0 +1,111 @@
+    <!DOCTYPE html>
+<html>
+<head>
+  <title>Matched IA ⚽</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 45px;
+    }
+
+    .container {
+      background: white;
+      color: black;
+      width: 350px;
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0px 10px 30px rgba(0,0,0,0.4);
+      animation: aparecer 0.8s ease;
+    }
+
+    @keyframes aparecer {
+      from {transform: scale(0.8); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #ff416c;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff1e56;
+      transform: scale(1.05);
+    }
+
+    #respuesta {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .emoji {
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>⚽ Matched IA</h1>
+  <p>Preguntame lo que quieras de fútbol 😎</p>
+
+  <div class="container">
+    <p class="emoji">🔥</p>
+
+    <input id="pregunta" placeholder="Ej: ¿Dónde juega Messi? 🤔">
+
+    <br>
+
+    <button onclick="responder()">Responder ⚡</button>
+
+    <p id="respuesta"></p>
+  </div>
+
+  <script>
+    function responder() {
+      let p = document.getElementById("pregunta").value.toLowerCase();
+
+      if (p.includes("messi")) {
+        document.getElementById("respuesta").innerText = "🐐 Messi juega en Inter Miami ⚽";
+      } 
+      else if (p.includes("ronaldo")) {
+        document.getElementById("respuesta").innerText = "💪 Cristiano Ronaldo juega en Al Nassr";
+      }
+      else if (p.includes("mejor jugador")) {
+        document.getElementById("respuesta").innerText = "😏 Obvio… Messi 🐐";
+      }
+      else {
+        document.getElementById("respuesta").innerText = "🤯 Esa no me la sé todavía... probá otra!";
+      }
+    }
+  </script>
+
+</body>
+</html>
