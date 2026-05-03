@@ -1,0 +1,101 @@
+      <!DOCTYPE html>
+<html>
+<head>
+  <title>Matched IA</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 40px;
+      font-size: 40px;
+    }
+
+    .container {
+      background: white;
+      color: black;
+      width: 320px;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #2a5298;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e3c72;
+    }
+
+    #respuesta {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    img {
+      width: 120px;
+      border-radius: 50%;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>⚽ Matched IA</h1>
+  <p>Tu asistente de fútbol</p>
+
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Lionel_Messi.jpg">
+
+  <div class="container">
+    <p>Haceme una pregunta:</p>
+
+    <input id="pregunta" placeholder="Ej: ¿Dónde juega Messi?">
+
+    <br>
+
+    <button onclick="responder()">Preguntar</button>
+
+    <p id="respuesta"></p>
+  </div>
+
+  <script>
+    function responder() {
+      let p = document.getElementById("pregunta").value.toLowerCase();
+
+      if (p.includes("messi")) {
+        document.getElementById("respuesta").innerText = "Messi juega en Inter Miami";
+      } 
+      else if (p.includes("ronaldo")) {
+        document.getElementById("respuesta").innerText = "Cristiano Ronaldo juega en Al Nassr";
+      }
+      else {
+        document.getElementById("respuesta").innerText = "No sé eso todavía 😅";
+      }
+    }
+  </script>
+
+</body>
+</html>
